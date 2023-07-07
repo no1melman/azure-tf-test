@@ -17,6 +17,8 @@ terraform {
 
 provider "azurerm" {
   features {}
+
+  use_msi = true
 }
 
 variable "subscription_environment" {
