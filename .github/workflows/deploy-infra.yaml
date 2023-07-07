@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.3
-      - uses: azure/login@v1
+      - uses: azure/login@v1.4.7
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -47,3 +47,12 @@ jobs:
         id: apply
         run: terraform apply -auto-approve -input=false -no-color
         working-directory: ./backend
+
+      - name: Azure CLI script
+        if: ${{ always() }}
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az logout
+            az cache purge
+            az account clear
