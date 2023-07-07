@@ -6,9 +6,14 @@ on:
     branches: 
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   backend:
     runs-on: ubuntu-latest
+    environment: main
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.3
@@ -36,5 +41,9 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color
-        continue-on-error: true
+        working-directory: ./backend
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve -input=false -no-color
         working-directory: ./backend
