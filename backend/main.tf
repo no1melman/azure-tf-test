@@ -12,13 +12,12 @@ terraform {
     storage_account_name = "tfuksstorageaccount"
     container_name       = "tfstate"
     key                  = "monzo.terraform.state"
+    use_msi              = true
   }
 }
 
 provider "azurerm" {
   features {}
-
-  use_msi = true
 }
 
 variable "subscription_environment" {
