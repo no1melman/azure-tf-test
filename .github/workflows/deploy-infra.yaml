@@ -40,8 +40,12 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: |
+          terraform plan -no-color \
+            -backend-config="subscription_id=$SUBSCRIPTION_ID"
         working-directory: ./backend
+        environment:
+          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Terraform Apply
         id: apply
