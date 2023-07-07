@@ -30,8 +30,12 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="subscription_id=$SUBSCRIPTION_ID"
         working-directory: ./backend
+        env:
+          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Terraform Validate
         id: validate
@@ -40,12 +44,8 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: |
-          terraform plan -no-color \
-            -backend-config="subscription_id=$SUBSCRIPTION_ID"
+        run: terraform plan -no-color 
         working-directory: ./backend
-        env:
-          SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Terraform Apply
         id: apply
